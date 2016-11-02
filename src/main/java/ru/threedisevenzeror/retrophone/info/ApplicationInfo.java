@@ -130,7 +130,7 @@ public class ApplicationInfo implements Closeable {
         } else {
             String jarUrl = getMainAttribute(KEY_JAR_URL);
             if(isRelativeUrl(jarUrl)) {
-                return new FileInputStream(new File(jadFile, jarUrl));
+                return new FileInputStream(new File(jadFile.getParent(), jarUrl));
             } else {
                 return new URL(jarUrl).openStream();
             }
@@ -266,7 +266,7 @@ public class ApplicationInfo implements Closeable {
     }
 
     private boolean isRelativeUrl(String url) {
-        return url.startsWith("http");
+        return !url.startsWith("http");
     }
 
     private static MidletInfo[] loadMidletsFromManifest(ApplicationInfo info, Manifest manifest) {
