@@ -177,7 +177,7 @@ public class Graphics {
 
     private Impl impl;
 
-    Graphics(Impl impl) {
+    public Graphics(Impl impl) {
         this.impl = impl;
 
         setClip(0, 0, impl.getWidth(), impl.getHeight());
