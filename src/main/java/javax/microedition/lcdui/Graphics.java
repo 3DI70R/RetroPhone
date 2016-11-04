@@ -117,13 +117,11 @@ public class Graphics {
         }
 
         public void setStrokeStyle(int style) {
-
             if(style != Graphics.SOLID && style != Graphics.DOTTED) {
-            } else {
                 throw new IllegalArgumentException("Unknown stroke style " + style);
+            } else {
+                this.strokeStyle = style;
             }
-
-            this.strokeStyle = style;
         }
 
         public void translate(int x, int y) {
