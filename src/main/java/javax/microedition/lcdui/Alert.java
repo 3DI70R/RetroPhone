@@ -32,19 +32,19 @@ public class Alert extends Screen {
 
     public abstract static class AlertDelegate extends ScreenDelegate {
 
-        void onAlertStringChanged(String oldAlertText, String newAlertText) {
+        public void onAlertStringChanged(String oldAlertText, String newAlertText) {
             // noop
         }
 
-        void onAlertImageChanged(Image oldImage, Image newImage) {
+        public void onAlertImageChanged(Image oldImage, Image newImage) {
             // noop
         }
 
-        void onAlertTypeChanged(AlertType oldType, AlertType newType) {
+        public void onAlertTypeChanged(AlertType oldType, AlertType newType) {
             // noop
         }
 
-        void onAlertTimeoutChanged(int oldTimeout, int newTimeout) {
+        public void onAlertTimeoutChanged(int oldTimeout, int newTimeout) {
             // noop
         }
 
@@ -66,8 +66,7 @@ public class Alert extends Screen {
     private Image alertImage;
     private AlertType alertType;
     private int timeout;
-
-    private DelegateHolder<AlertDelegate> delegateHolder;
+    private final DelegateHolder<AlertDelegate> delegateHolder;
 
     /**
      * Constructs a new, empty Alert object with the given title.
@@ -94,6 +93,7 @@ public class Alert extends Screen {
      * @param alertType the type of the Alert, or null if the Alert has no specific type
      */
     public Alert(String title, String alertText, Image alertImage, AlertType alertType) {
+        delegateHolder = new DelegateHolder<>(this);
         setTitle(title);
         setString(alertText);
         setImage(alertImage);

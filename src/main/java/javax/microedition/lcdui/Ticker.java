@@ -48,7 +48,7 @@ public class Ticker {
      * @throws NullPointerException if str is null
      */
     public Ticker(String str) {
-        delegateHolder = new DelegateHolder<>(null, this);
+        delegateHolder = new DelegateHolder<>(this);
         setString(str);
     }
 

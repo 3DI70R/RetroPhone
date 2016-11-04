@@ -9,16 +9,10 @@ public class DelegateHolder<D extends ComponentDelegate> {
         void call(D d);
     }
 
-    private DelegateHolder<? super D> parentHolder;
     private D delegate;
     private Object attachObject;
 
     public DelegateHolder(Object attachObject) {
-        this(null, attachObject);
-    }
-
-    public DelegateHolder(DelegateHolder<? super D> parentHolder, Object attachObject) {
-        this.parentHolder = parentHolder;
         this.attachObject = attachObject;
     }
 
@@ -33,8 +27,6 @@ public class DelegateHolder<D extends ComponentDelegate> {
     }
 
     public void setDelegate(D delegate) {
-
-        parentHolder.setDelegate(delegate);
 
         if(this.delegate != delegate) {
             clearDelegate();
@@ -54,10 +46,6 @@ public class DelegateHolder<D extends ComponentDelegate> {
     }
 
     protected void clearDelegate() {
-
-        if(parentHolder != null) {
-            parentHolder.clearDelegate();
-        }
 
         if(delegate != null) {
             delegate.onDetach();

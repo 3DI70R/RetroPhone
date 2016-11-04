@@ -23,7 +23,7 @@ public class StringItem extends Item {
     }
 
     private String currentText;
-    private DelegateHolder<StringItemDelegate> delegateHolder;
+    private final DelegateHolder<StringItemDelegate> delegateHolder;
 
     /**
      * Creates a new StringItem object with empty label and textual content
