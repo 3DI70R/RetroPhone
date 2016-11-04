@@ -17,23 +17,19 @@ public class ChoiceGroup extends Item implements Choice {
 
     public static abstract class ChoiceGroupDelegate extends ItemDelegate implements ChoiceDelegate {
 
-        @Override
         public void onItemAdded(int index, String stringPart, Image imagePart) {
             // noop
         }
 
-        @Override
         public void onItemChanged(int index, String oldStringPart, Image oldImagePart,
                                   String newStringPart, Image newImagePart) {
             // noop
         }
 
-        @Override
         public void onItemRemoved(int index, String stringPart, Image imagePart) {
             // noop
         }
 
-        @Override
         public void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected) {
             // noop
         }
@@ -139,7 +135,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int size() {
         return itemList.size();
     }
@@ -147,7 +142,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public String getString(int elementNum) {
         return itemList.get(elementNum).string;
     }
@@ -155,7 +149,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public Image getImage(int elementNum) {
         return itemList.get(elementNum).image;
     }
@@ -163,7 +156,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int append(String stringPart, Image imagePart) {
         int index = itemList.size();
         ChoiceEntry entry = new ChoiceEntry(stringPart, imagePart);
@@ -181,7 +173,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void insert(int elementNum, String stringPart, Image imagePart) {
         ChoiceEntry entry = new ChoiceEntry(stringPart, imagePart);
         checkItem(entry);
@@ -197,7 +188,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void delete(int elementNum) {
         ChoiceEntry entry = itemList.remove(elementNum);
 
@@ -210,7 +200,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void set(int elementNum, String stringPart, Image imagePart) {
         ChoiceEntry entry = new ChoiceEntry(stringPart, imagePart);
         checkItem(entry);
@@ -225,7 +214,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public boolean isSelected(int elementNum) {
         return itemList.get(elementNum).isSelected;
     }
@@ -233,7 +221,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int getSelectedIndex() {
         for(int i = 0; i < itemList.size(); i++) {
             if(itemList.get(i).isSelected) {
@@ -246,7 +233,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int getSelectedFlags(boolean[] selectedArray_return) {
         int totalCount = 0;
         for(int i = 0; i < itemList.size(); i++) {
@@ -262,7 +248,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setSelectedIndex(int elementNum, boolean selected) {
         ChoiceEntry entry = itemList.get(elementNum);
         if(choiceType == MULTIPLE) {
@@ -285,7 +270,6 @@ public class ChoiceGroup extends Item implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setSelectedFlags(boolean[] selectedArray) {
         if(choiceType == MULTIPLE) {
             for(int i = 0; i < itemList.size(); i++) {

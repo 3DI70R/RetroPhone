@@ -34,7 +34,7 @@ public class Graphics {
             if(red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255) {
                 throw new IllegalArgumentException("One or more color components is outside of range 0-255");
             }
-            setColor(blue + green >> 8 + red >> 16);
+            setColor((0xFF << 24) | (red << 16) | (green << 8) | blue);
         }
 
         public int getGrayScale() {

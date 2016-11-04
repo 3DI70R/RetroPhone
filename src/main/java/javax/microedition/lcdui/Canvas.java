@@ -16,6 +16,31 @@ public abstract class Canvas extends Displayable {
             canvas.paint(graphics);
         }
 
+        public void notifyShow() {
+            checkForAttach();
+            getAttachedObject().showNotify();
+        }
+
+        public void notifyHide() {
+            checkForAttach();
+            getAttachedObject().hideNotify();
+        }
+
+        public void notifyPointerPressed(int x, int y) {
+            checkForAttach();
+            getAttachedObject().pointerPressed(x, y);
+        }
+
+        public void notifyPointerDragged(int x, int y) {
+            checkForAttach();
+            getAttachedObject().pointerDragged(x, y);
+        }
+
+        public void notifyPointerReleased(int x, int y) {
+            checkForAttach();
+            getAttachedObject().pointerReleased(x, y);
+        }
+
         public void repaint(int x, int y, int width, int height) {
             // noop
         }

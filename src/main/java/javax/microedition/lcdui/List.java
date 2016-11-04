@@ -66,23 +66,19 @@ public class List extends Screen implements Choice {
 
     public static abstract class ListDelegate extends ScreenDelegate implements ChoiceDelegate {
 
-        @Override
         public void onItemAdded(int index, String stringPart, Image imagePart) {
             // noop
         }
 
-        @Override
         public void onItemChanged(int index, String oldStringPart, Image oldImagePart,
                                   String newStringPart, Image newImagePart) {
             // noop
         }
 
-        @Override
         public void onItemRemoved(int index, String stringPart, Image imagePart) {
             // noop
         }
 
-        @Override
         public void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected) {
             // noop
         }
@@ -187,7 +183,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int size() {
         return choice.size();
     }
@@ -195,7 +190,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public String getString(int elementNum) {
         return choice.getString(elementNum);
     }
@@ -203,7 +197,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public Image getImage(int elementNum) {
         return choice.getImage(elementNum);
     }
@@ -211,7 +204,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int append(String stringPart, Image imagePart) {
         return choice.append(stringPart, imagePart);
     }
@@ -219,7 +211,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void insert(int elementNum, String stringPart, Image imagePart) {
         choice.insert(elementNum, stringPart, imagePart);
     }
@@ -227,7 +218,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void delete(int elementNum) {
         choice.delete(elementNum);
     }
@@ -235,7 +225,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void set(int elementNum, String stringPart, Image imagePart) {
         choice.set(elementNum, stringPart, imagePart);
     }
@@ -243,7 +232,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public boolean isSelected(int elementNum) {
         return choice.isSelected(elementNum);
     }
@@ -251,7 +239,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int getSelectedIndex() {
         return choice.getSelectedIndex();
     }
@@ -259,7 +246,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public int getSelectedFlags(boolean[] selectedArray_return) {
         return choice.getSelectedFlags(selectedArray_return);
     }
@@ -267,7 +253,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setSelectedIndex(int elementNum, boolean selected) {
         choice.setSelectedIndex(elementNum, selected);
 
@@ -279,7 +264,6 @@ public class List extends Screen implements Choice {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setSelectedFlags(boolean[] selectedArray) {
         choice.setSelectedFlags(selectedArray);
     }
