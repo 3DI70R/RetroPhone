@@ -4,8 +4,31 @@ import ru.threedisevenzeror.retrophone.DisplayDevice;
 import ru.threedisevenzeror.retrophone.GraphicsDevice;
 import ru.threedisevenzeror.retrophone.InputDevice;
 import ru.threedisevenzeror.retrophone.RetroDevice;
+import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 public abstract class Canvas extends Displayable {
+
+    public static abstract class CanvasDelegate extends DisplayableDelegate {
+
+        public void paint(Graphics graphics) {
+            checkForAttach();
+            Canvas canvas = getAttachedObject();
+            canvas.paint(graphics);
+        }
+
+        public void repaint(int x, int y, int width, int height) {
+            // noop
+        }
+
+        public void serviceRepaints() {
+            // noop
+        }
+
+        @Override
+        public Canvas getAttachedObject() {
+            return (Canvas) super.getAttachedObject();
+        }
+    }
 
     /**
      * Constant for the UP game action.
@@ -115,12 +138,14 @@ public abstract class Canvas extends Displayable {
     private GraphicsDevice graphicsDevice;
     private DisplayDevice displayDevice;
     private InputDevice inputDevice;
+    private final DelegateHolder<CanvasDelegate> delegateHolder;
 
     private int width;
     private int height;
 
     protected Canvas() {
 
+        delegateHolder = new DelegateHolder<CanvasDelegate>(this);
         graphicsDevice = RetroDevice.getInstance().getGraphics();
         displayDevice = RetroDevice.getInstance().getDisplay();
         inputDevice = RetroDevice.getInstance().getInput();
@@ -345,7 +370,10 @@ public abstract class Canvas extends Displayable {
      * @param height the height of the rectangle to be repainted
      */
     public final void repaint(int x, int y, int width, int height) {
-        // TODO: IMPL
+        CanvasDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.repaint(x, y, width, height);
+        }
     }
 
     /**
@@ -369,7 +397,10 @@ public abstract class Canvas extends Displayable {
      * the danger of deadlock.
      */
     public final void serviceRepaints() {
-        // TODO: IMPL
+        CanvasDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.serviceRepaints();
+        }
     }
 
     /**
@@ -431,5 +462,16 @@ public abstract class Canvas extends Displayable {
      * @param g the Graphics object to be used for rendering the Canvas
      */
     protected abstract void paint(Graphics g);
+
+    public void attachDelegate(CanvasDelegate delegate) {
+        super.attachDelegate(delegate);
+        delegateHolder.setDelegate(delegate);
+    }
+
+    @Override
+    public void attachDelegate(DisplayableDelegate delegate) {
+        delegateHolder.setDelegate(null);
+        super.attachDelegate(delegate);
+    }
 }
 
