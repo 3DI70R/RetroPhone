@@ -141,29 +141,41 @@ public class List extends Screen implements Choice {
      * @throws IllegalArgumentException if any image in the imageElements array is mutable
      */
     public List(String title, int listType, String[] stringElements, Image[] imageElements) {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<ListDelegate>(this);
         choice = new ChoiceGroup(title, listType, stringElements, imageElements, true);
         choice.setOwner(this);
         choiceDelegate = new ChoiceGroup.ChoiceGroupDelegate() {
 
             @Override
             public void onItemAdded(int index, String stringPart, Image imagePart) {
-                delegateHolder.callIfExists(d -> d.onItemAdded(index, stringPart, imagePart));
+                ListDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onItemAdded(index, stringPart, imagePart);
+                }
             }
 
             @Override
             public void onItemChanged(int index, String oldStringPart, Image oldImagePart, String newStringPart, Image newImagePart) {
-                delegateHolder.callIfExists(d -> d.onItemChanged(index, oldStringPart, oldImagePart, newStringPart, newImagePart));
+                ListDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onItemChanged(index, oldStringPart, oldImagePart, newStringPart, newImagePart);
+                }
             }
 
             @Override
             public void onItemRemoved(int index, String stringPart, Image imagePart) {
-                delegateHolder.callIfExists(d -> d.onItemRemoved(index, stringPart, imagePart));
+                ListDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onItemRemoved(index, stringPart, imagePart);
+                }
             }
 
             @Override
             public void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected) {
-                delegateHolder.callIfExists(d -> d.onItemSelectionChange(index, stringPart, imagePart, isSelected));
+                ListDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onItemSelectionChange(index, stringPart, imagePart, isSelected);
+                }
             }
         };
 
@@ -260,7 +272,7 @@ public class List extends Screen implements Choice {
         choice.setSelectedIndex(elementNum, selected);
 
         if(selected && choiceDelegate.getChoiceType() != IMPLICIT) {
-            delegateHolder.callIfExists(d -> d.invokeCommand(SELECT_COMMAND));
+            invokeCommand(SELECT_COMMAND);
         }
     }
 

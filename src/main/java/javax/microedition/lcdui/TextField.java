@@ -148,7 +148,7 @@ public class TextField extends Item {
      * capacity or the maximum capacity actually assigned
      */
     public TextField(String label, String text, int maxSize, int constraints) {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<TextFieldDelegate>(this);
         setLabel(label);
         setMaxSize(maxSize);
         setConstraints(constraints);
@@ -178,7 +178,10 @@ public class TextField extends Item {
             this.string = text;
         }
 
-        delegateHolder.callIfExists(d -> d.onStringChanged(oldString, string));
+        TextFieldDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onStringChanged(oldString, string);
+        }
     }
 
     /**
@@ -311,7 +314,10 @@ public class TextField extends Item {
         int oldMaxSize = currentMaxSize;
         currentMaxSize = maxSize;
 
-        delegateHolder.callIfExists(d -> d.onMaxSizeChanged(oldMaxSize, maxSize));
+        TextFieldDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onMaxSizeChanged(oldMaxSize, maxSize);
+        }
 
         return maxSize;
     }
@@ -354,7 +360,10 @@ public class TextField extends Item {
                     setString(null);
                 }
 
-                delegateHolder.callIfExists(d -> d.onConstraintsChanged(oldConstraints, constraints));
+                TextFieldDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onConstraintsChanged(oldConstraints, constraints);
+                }
 
                 break;
             default:

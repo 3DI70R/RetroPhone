@@ -98,7 +98,7 @@ public class DateField extends Item {
             throw new IllegalArgumentException("input inputMode value is invalid");
         }
 
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<DateFieldDelegate>(this);
         inputMode = mode;
         currentDate = null;
 
@@ -141,7 +141,11 @@ public class DateField extends Item {
     public void setDate(Date date) {
         Date oldDate = currentDate;
         currentDate = date;
-        delegateHolder.callIfExists(d -> d.onDateChanged(oldDate, currentDate));
+
+        DateFieldDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onDateChanged(oldDate, currentDate);
+        }
     }
 
     /**
@@ -161,7 +165,11 @@ public class DateField extends Item {
     public void setInputMode(int mode) {
         int oldInputMode = inputMode;
         inputMode = mode;
-        delegateHolder.callIfExists(d -> d.onInputModeChanged(oldInputMode, inputMode));
+
+        DateFieldDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onInputModeChanged(oldInputMode, inputMode);
+        }
     }
 
     public void attachDelegate(DateFieldDelegate newDelegate) {

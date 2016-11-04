@@ -93,7 +93,7 @@ public class Alert extends Screen {
      * @param alertType the type of the Alert, or null if the Alert has no specific type
      */
     public Alert(String title, String alertText, Image alertImage, AlertType alertType) {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<AlertDelegate>(this);
         setTitle(title);
         setString(alertText);
         setImage(alertImage);
@@ -131,7 +131,10 @@ public class Alert extends Screen {
     public void setTimeout(int time) {
         int oldTimeout = this.timeout;
         this.timeout = time;
-        delegateHolder.callIfExists(d -> d.onAlertTimeoutChanged(oldTimeout, timeout));
+        AlertDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onAlertTimeoutChanged(oldTimeout, timeout);
+        }
     }
 
     /**
@@ -150,7 +153,11 @@ public class Alert extends Screen {
     public void setType(AlertType alertType) {
         AlertType oldType = this.alertType;
         this.alertType = alertType;
-        delegateHolder.callIfExists(d -> d.onAlertTypeChanged(oldType, alertType));
+
+        AlertDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onAlertTypeChanged(oldType, alertType);
+        }
     }
 
     /**
@@ -168,7 +175,10 @@ public class Alert extends Screen {
     public void setString(String str) {
         String oldText = this.alertText;
         alertText = str;
-        delegateHolder.callIfExists(d -> d.onAlertStringChanged(oldText, alertText));
+        AlertDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onAlertStringChanged(oldText, alertText);
+        }
     }
 
     /**
@@ -191,7 +201,11 @@ public class Alert extends Screen {
         }
         Image oldImage = alertImage;
         alertImage = img;
-        delegateHolder.callIfExists(d -> d.onAlertImageChanged(oldImage, alertImage));
+
+        AlertDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onAlertImageChanged(oldImage, alertImage);
+        }
     }
 
     /**

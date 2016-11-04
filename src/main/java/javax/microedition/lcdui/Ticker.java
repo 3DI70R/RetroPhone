@@ -48,7 +48,7 @@ public class Ticker {
      * @throws NullPointerException if str is null
      */
     public Ticker(String str) {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<TickerDelegate>(this);
         setString(str);
     }
 
@@ -71,7 +71,11 @@ public class Ticker {
         if(str != null) {
             String oldString = string;
             string = str;
-            delegateHolder.callIfExists(d -> d.onStringChanged(oldString, string));
+
+            TickerDelegate delegate = delegateHolder.getDelegate();
+            if(delegate != null) {
+                delegate.onStringChanged(oldString, string);
+            }
         } else {
             throw new NullPointerException("Cannot set null string for ticker");
         }

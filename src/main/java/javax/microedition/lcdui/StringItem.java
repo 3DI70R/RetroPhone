@@ -38,7 +38,7 @@ public class StringItem extends Item {
      * @param text the text contents
      */
     public StringItem(String label, String text)  {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<StringItemDelegate>(this);
         setLabel(label);
         setText(text);
     }
@@ -58,7 +58,10 @@ public class StringItem extends Item {
     public void setText(String text) {
         String oldText = currentText;
         currentText = text;
-        delegateHolder.callIfExists(d -> d.onTextChanged(oldText, currentText));
+        StringItemDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onTextChanged(oldText, currentText);
+        }
     }
 
     @Override

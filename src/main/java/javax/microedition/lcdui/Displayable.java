@@ -57,10 +57,7 @@ public abstract class Displayable {
          */
         public void invokeCommand(Command command) {
             checkForAttach();
-            Displayable displayable = getAttachedObject();
-            if(displayable.commandListener != null) {
-                displayable.commandListener.commandAction(command, displayable);
-            }
+            getAttachedObject().invokeCommand(command);
         }
 
         @Override
@@ -74,8 +71,8 @@ public abstract class Displayable {
     private java.util.List<Command> commandList;
 
     public Displayable() {
-        commandList = new ArrayList<>();
-        delegateHolder = new DelegateHolder<>(this);
+        commandList = new ArrayList<Command>();
+        delegateHolder = new DelegateHolder<DisplayableDelegate>(this);
     }
 
     /**
@@ -145,6 +142,12 @@ public abstract class Displayable {
      */
     public void attachDelegate(DisplayableDelegate delegate) {
         delegateHolder.setDelegate(delegate);
+    }
+
+    protected void invokeCommand(Command command) {
+        if(commandListener != null) {
+            commandListener.commandAction(command, this);
+        }
     }
 }
 

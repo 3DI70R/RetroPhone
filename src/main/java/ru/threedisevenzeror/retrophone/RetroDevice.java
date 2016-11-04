@@ -41,7 +41,7 @@ public class RetroDevice {
         }
     }
 
-    private static InheritableThreadLocal<RetroDevice> instance = new InheritableThreadLocal<>();
+    private static InheritableThreadLocal<RetroDevice> instance = new InheritableThreadLocal<RetroDevice>();
 
     private GraphicsDevice graphicsDevice;
     private InputDevice inputDevice;

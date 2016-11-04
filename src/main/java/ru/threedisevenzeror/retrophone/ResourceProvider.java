@@ -8,8 +8,11 @@ import java.io.InputStream;
  */
 public interface ResourceProvider {
 
-    ResourceProvider Null = name -> {
-        throw new IOException("Null resource provider");
+    ResourceProvider Null = new ResourceProvider() {
+        @Override
+        public InputStream open(String name) throws IOException {
+            throw new IOException("Null resource provider");
+        }
     };
 
     InputStream open(String name) throws IOException;

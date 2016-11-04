@@ -1,13 +1,11 @@
 package ru.threedisevenzeror.retrophone.utils;
 
+import com.sun.istack.internal.Nullable;
+
 /**
  * Created by ThreeDISevenZeroR on 04.11.2016.
  */
 public class DelegateHolder<D extends ComponentDelegate> {
-
-    public interface DelegateCaller<D> {
-        void call(D d);
-    }
 
     private D delegate;
     private Object attachObject;
@@ -16,15 +14,14 @@ public class DelegateHolder<D extends ComponentDelegate> {
         this.attachObject = attachObject;
     }
 
+    @Nullable
     public D getDelegate() {
         return delegate;
     }
 
-    public void callIfExists(DelegateCaller<D> call) {
-        if(delegate != null) {
-            call.call(delegate);
-        }
-    }
+    /*public boolean hasDelegate() {
+        return getDelegate() != null;
+    }*/
 
     public void setDelegate(D delegate) {
 

@@ -78,25 +78,37 @@ public class TextBox extends Screen {
      * @throws IllegalArgumentException if the length of the string exceeds the requested maximum capacity or the maximum capacity actually assigned
      */
     public TextBox(String title, String text, int maxSize, int constraints) {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<TextBoxDelegate>(this);
         textField = new TextField(title, text, maxSize, constraints);
         textField.attachDelegate(new TextField.TextFieldDelegate() {
             @Override
             public void onMaxSizeChanged(int prevMaxSize, int newMaxSize) {
                 super.onMaxSizeChanged(prevMaxSize, newMaxSize);
-                delegateHolder.callIfExists(d -> d.onMaxSizeChanged(prevMaxSize, newMaxSize));
+
+                TextBoxDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onMaxSizeChanged(prevMaxSize, newMaxSize);
+                }
             }
 
             @Override
             public void onConstraintsChanged(int prevConstraints, int newConstraints) {
                 super.onConstraintsChanged(prevConstraints, newConstraints);
-                delegateHolder.callIfExists(d -> d.onConstraintsChanged(prevConstraints, newConstraints));
+
+                TextBoxDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onConstraintsChanged(prevConstraints, newConstraints);
+                }
             }
 
             @Override
             public void onStringChanged(String prevString, String newString) {
                 super.onStringChanged(prevString, newString);
-                delegateHolder.callIfExists(d -> d.onStringChanged(prevString, newString));
+
+                TextBoxDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onStringChanged(prevString, newString);
+                }
             }
         });
 

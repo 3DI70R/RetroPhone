@@ -71,7 +71,7 @@ public class ImageItem extends Item {
      * @throws IllegalArgumentException if the layout value is not a legal combination of directives
      */
     public ImageItem(String label, Image img, int layout, String altText) {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<ImageItemDelegate>(this);
         setLabel(label);
         setImage(img);
         setLayout(layout);
@@ -100,7 +100,11 @@ public class ImageItem extends Item {
 
         Image oldImage = image;
         image = img;
-        delegateHolder.callIfExists(d -> d.onImageChanged(oldImage, image));
+
+        ImageItemDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onImageChanged(oldImage, image);
+        }
     }
 
     /**
@@ -118,7 +122,11 @@ public class ImageItem extends Item {
     public void setAltText(String text) {
         String oldAltText = altText;
         altText = text;
-        delegateHolder.callIfExists(d -> d.onAltTextChanged(oldAltText, altText));
+
+        ImageItemDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onAltTextChanged(oldAltText, altText);
+        }
     }
 
     /**
@@ -141,7 +149,10 @@ public class ImageItem extends Item {
         int oldLayout = itemLayout;
         itemLayout = layout;
 
-        delegateHolder.callIfExists(d -> d.onLayoutChanged(oldLayout, itemLayout));
+        ImageItemDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onLayoutChanged(oldLayout, itemLayout);
+        }
     }
 
     ////////// Implementation methods \\\\\\\\\\

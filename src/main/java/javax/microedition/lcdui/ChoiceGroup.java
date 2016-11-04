@@ -125,9 +125,9 @@ public class ChoiceGroup extends Item implements Choice {
             throw new IllegalArgumentException("the imageElements has a different length from the stringElements array");
         }
 
-        this.delegateHolder = new DelegateHolder<>(this);
+        this.delegateHolder = new DelegateHolder<ChoiceGroupDelegate>(this);
         this.choiceType = choiceType;
-        this.itemList = new ArrayList<>();
+        this.itemList = new ArrayList<ChoiceEntry>();
 
         setLabel(label);
 
@@ -169,7 +169,12 @@ public class ChoiceGroup extends Item implements Choice {
         ChoiceEntry entry = new ChoiceEntry(stringPart, imagePart);
         checkItem(entry);
         itemList.add(entry);
-        delegateHolder.callIfExists(d -> d.onItemAdded(index, stringPart, imagePart));
+
+        ChoiceGroupDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemAdded(index, stringPart, imagePart);
+        }
+
         return index;
     }
 
@@ -181,7 +186,12 @@ public class ChoiceGroup extends Item implements Choice {
         ChoiceEntry entry = new ChoiceEntry(stringPart, imagePart);
         checkItem(entry);
         itemList.add(elementNum, entry);
-        delegateHolder.callIfExists(d -> d.onItemAdded(elementNum, stringPart, imagePart));
+
+
+        ChoiceGroupDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemAdded(elementNum, stringPart, imagePart);
+        }
     }
 
     /**
@@ -190,7 +200,11 @@ public class ChoiceGroup extends Item implements Choice {
     @Override
     public void delete(int elementNum) {
         ChoiceEntry entry = itemList.remove(elementNum);
-        delegateHolder.callIfExists(d -> d.onItemRemoved(elementNum, entry.string, entry.image));
+
+        ChoiceGroupDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemRemoved(elementNum, entry.string, entry.image);
+        }
     }
 
     /**
@@ -201,7 +215,11 @@ public class ChoiceGroup extends Item implements Choice {
         ChoiceEntry entry = new ChoiceEntry(stringPart, imagePart);
         checkItem(entry);
         ChoiceEntry oldEntry = itemList.set(elementNum, entry);
-        delegateHolder.callIfExists(d -> d.onItemChanged(elementNum, oldEntry.string, oldEntry.image, stringPart, imagePart));
+
+        ChoiceGroupDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemChanged(elementNum, oldEntry.string, oldEntry.image, stringPart, imagePart);
+        }
     }
 
     /**
@@ -258,7 +276,10 @@ public class ChoiceGroup extends Item implements Choice {
             }
         }
 
-        delegateHolder.callIfExists(d -> d.onItemSelectionChange(elementNum, entry.string, entry.image, entry.isSelected));
+        ChoiceGroupDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemSelectionChange(elementNum, entry.string, entry.image, entry.isSelected);
+        }
     }
 
     /**

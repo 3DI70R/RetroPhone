@@ -44,7 +44,7 @@ public abstract class Screen extends Displayable {
     private final DelegateHolder<ScreenDelegate> delegateHolder;
 
     public Screen() {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<ScreenDelegate>(this);
     }
 
     /**
@@ -63,7 +63,11 @@ public abstract class Screen extends Displayable {
     public void setTitle(String s) {
         String oldTitle = title;
         title = s;
-        delegateHolder.callIfExists(d -> d.onTitleChanged(oldTitle, title));
+
+        ScreenDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onTitleChanged(oldTitle, title);
+        }
     }
 
     /**
@@ -86,7 +90,11 @@ public abstract class Screen extends Displayable {
     public void setTicker(Ticker ticker) {
         Ticker oldTicker = this.ticker;
         this.ticker = ticker;
-        delegateHolder.callIfExists(d -> d.onTickerChanged(oldTicker, this.ticker));
+
+        ScreenDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onTickerChanged(oldTicker, this.ticker);
+        }
     }
 
     @Override

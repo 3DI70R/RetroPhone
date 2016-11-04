@@ -81,19 +81,21 @@ public class Form extends Screen {
      * @param title the Form's title, or null for no title
      */
     public Form(String title) {
-        delegateHolder = new DelegateHolder<>(this);
-        innerStateListener = item -> {
+        delegateHolder = new DelegateHolder<FormDelegate>(this);
+        innerStateListener = new ItemStateListener() {
+            @Override
+            public void itemStateChanged(Item item) {
+                if(itemStateListener != null) {
+                    itemStateListener.itemStateChanged(item);
+                }
 
-            if(itemStateListener != null) {
-                itemStateListener.itemStateChanged(item);
+                FormDelegate delegate = delegateHolder.getDelegate();
+                if(delegate != null) {
+                    delegate.onItemStateChanged(itemList.indexOf(item), item);
+                }
             }
-
-            delegateHolder.callIfExists(d -> {
-                int index = itemList.indexOf(item);
-                d.onItemStateChanged(index, item);
-            });
         };
-        itemList = new ArrayList<>();
+        itemList = new ArrayList<Item>();
         setTitle(title);
     }
 
@@ -187,7 +189,11 @@ public class Form extends Screen {
         itemList.add(itemNum, item);
         item.setItemStateListener(innerStateListener);
         item.setOwner(this);
-        delegateHolder.callIfExists(d -> d.onItemAdded(itemNum, item));
+
+        FormDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemAdded(itemNum, item);
+        }
     }
 
     /**
@@ -201,7 +207,11 @@ public class Form extends Screen {
         Item item = itemList.remove(itemNum);
         item.setOwner(null);
         item.setItemStateListener(null);
-        delegateHolder.callIfExists(d -> d.onItemRemoved(itemNum, item));
+
+        FormDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemRemoved(itemNum, item);
+        }
     }
 
     /**
@@ -228,7 +238,10 @@ public class Form extends Screen {
         oldItem.setOwner(null);
         oldItem.setItemStateListener(null);
 
-        delegateHolder.callIfExists(d -> d.onItemChanged(itemNum, oldItem, item));
+        FormDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onItemChanged(itemNum, oldItem, item);
+        }
     }
 
     /**

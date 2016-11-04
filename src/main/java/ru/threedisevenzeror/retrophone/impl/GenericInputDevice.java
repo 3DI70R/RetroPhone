@@ -21,9 +21,9 @@ public class GenericInputDevice extends InputDevice {
         private Map<Integer, Integer> actionToKeyCode;
 
         public Builder() {
-            keyNames = new HashMap<>();
-            keyCodeToAction = new HashMap<>();
-            actionToKeyCode = new HashMap<>();
+            keyNames = new HashMap<Integer, String>();
+            keyCodeToAction = new HashMap<Integer, Integer>();
+            actionToKeyCode = new HashMap<Integer, Integer>();
 
             hasPointerEvents(false);
             hasPointerMotionEvents(false);
@@ -70,7 +70,7 @@ public class GenericInputDevice extends InputDevice {
 
         public Builder setKeyCodeNamesMap(Map<Integer, String> keyCodeNames) {
 
-            keyNames = new HashMap<>();
+            keyNames = new HashMap<Integer, String>();
 
             if(keyCodeNames != null) {
                 for(Map.Entry<Integer, String> e : keyCodeNames.entrySet()) {
@@ -83,8 +83,8 @@ public class GenericInputDevice extends InputDevice {
 
         public Builder setKeyCodeActionMap(Map<Integer, Integer> keyCodeActions) {
 
-            keyCodeToAction = new HashMap<>();
-            actionToKeyCode = new HashMap<>();
+            keyCodeToAction = new HashMap<Integer, Integer>();
+            actionToKeyCode = new HashMap<Integer, Integer>();
 
             if(keyCodeActions != null) {
                 for(Map.Entry<Integer, Integer> e : keyCodeActions.entrySet()) {
@@ -112,9 +112,9 @@ public class GenericInputDevice extends InputDevice {
             device.hasPointerEvents = hasPointerEvents;
             device.hasPointerMotionEvents = hasPointerMotionEvents;
             device.hasRepeatEvents = hasRepeatEvents;
-            device.keyNames = new HashMap<>(keyNames);
-            device.keyCodeToAction = new HashMap<>(keyCodeToAction);
-            device.actionToKeyCode = new HashMap<>(actionToKeyCode);
+            device.keyNames = new HashMap<Integer, String>(keyNames);
+            device.keyCodeToAction = new HashMap<Integer, Integer>(keyCodeToAction);
+            device.actionToKeyCode = new HashMap<Integer, Integer>(actionToKeyCode);
 
             return device;
         }

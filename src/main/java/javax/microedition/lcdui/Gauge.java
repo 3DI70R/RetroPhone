@@ -72,7 +72,7 @@ public class Gauge extends Item {
      */
     public Gauge(String label, boolean interactive, int maxValue, int initialValue)  {
 
-        this.delegateHolder = new DelegateHolder<>(this);
+        this.delegateHolder = new DelegateHolder<GaugeDelegate>(this);
         this.isInteractive = interactive;
 
         setLabel(label);
@@ -96,7 +96,10 @@ public class Gauge extends Item {
             this.value = value;
         }
 
-        delegateHolder.callIfExists(d -> d.onValueChanged(oldValue, this.value));
+        GaugeDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onValueChanged(oldValue, this.value);
+        }
     }
 
     /**
@@ -126,7 +129,10 @@ public class Gauge extends Item {
         int oldValue = this.maxValue;
         this.maxValue = maxValue;
 
-        delegateHolder.callIfExists(d -> d.onMaxValueChanged(oldValue, maxValue));
+        GaugeDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onMaxValueChanged(oldValue, maxValue);
+        }
     }
 
     /**

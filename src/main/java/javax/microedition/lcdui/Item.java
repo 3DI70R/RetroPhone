@@ -40,7 +40,7 @@ public abstract class Item {
     private final DelegateHolder<ItemDelegate> delegateHolder;
 
     public Item() {
-        delegateHolder = new DelegateHolder<>(this);
+        delegateHolder = new DelegateHolder<ItemDelegate>(this);
     }
 
     /**
@@ -58,7 +58,11 @@ public abstract class Item {
     public void setLabel(String label) {
         String oldLabel = itemLabel;
         itemLabel = label;
-        delegateHolder.callIfExists(d -> d.onLabelChanged(oldLabel, itemLabel));
+
+        ItemDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onLabelChanged(oldLabel, itemLabel);
+        }
     }
 
     ////////// Implementation methods \\\\\\\\\\
@@ -74,7 +78,10 @@ public abstract class Item {
     void setOwner(Displayable newOwner) {
         Displayable oldOwner = this.owner;
         owner = newOwner;
-        delegateHolder.callIfExists(d -> d.onOwnerChanged(oldOwner, newOwner));
+        ItemDelegate delegate = delegateHolder.getDelegate();
+        if(delegate != null) {
+            delegate.onOwnerChanged(oldOwner, newOwner);
+        }
     }
 
     Displayable getOwner() {
