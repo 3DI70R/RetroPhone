@@ -31,6 +31,21 @@ public abstract class Canvas extends Displayable {
             getAttachedObject().pointerPressed(x, y);
         }
 
+        public void notifyKeyPressed(int keyCode) {
+            checkForAttach();
+            getAttachedObject().keyPressed(keyCode);
+        }
+
+        public void notifyKeyRepeated(int keyCode) {
+            checkForAttach();
+            getAttachedObject().keyRepeated(keyCode);
+        }
+
+        public void notifyKeyReleased(int keyCode) {
+            checkForAttach();
+            getAttachedObject().keyReleased(keyCode);
+        }
+
         public void notifyPointerDragged(int x, int y) {
             checkForAttach();
             getAttachedObject().pointerDragged(x, y);
