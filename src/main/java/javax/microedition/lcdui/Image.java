@@ -35,7 +35,7 @@ import java.io.IOException;
  */
 public class Image {
 
-    public abstract class Impl {
+    public abstract static class Impl {
 
         public abstract boolean isMutable();
 

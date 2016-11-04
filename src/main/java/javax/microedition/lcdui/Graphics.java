@@ -2,7 +2,7 @@ package javax.microedition.lcdui;
 
 public class Graphics {
 
-    public abstract class Impl {
+    public abstract static class Impl {
 
         private int color;
         private int xTranslation;

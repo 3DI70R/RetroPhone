@@ -3,29 +3,17 @@ package ru.threedisevenzeror.retrophone;
 /**
  * Created by ThreeDISevenZeroR on 04.11.2016.
  */
-public class InputDevice {
+public abstract class InputDevice {
 
-    public boolean hasPointerEvents() {
-        return true;
-    }
+    public abstract boolean hasPointerEvents();
 
-    public boolean hasPointerMotionEvents() {
-        return true;
-    }
+    public abstract boolean hasPointerMotionEvents();
 
-    public boolean hasRepeatEvents() {
-        return true;
-    }
+    public abstract boolean hasRepeatEvents();
 
-    public int getKeyCode(int gameAction) {
-        return 0;
-    }
+    public abstract int getKeyCode(int gameAction);
 
-    public String getKeyName(int keyCode) {
-        return "KEY_" + String.valueOf(keyCode);
-    }
+    public abstract String getKeyName(int keyCode);
 
-    public int getGameAction(int keyCode) {
-        return 0;
-    }
+    public abstract int getGameAction(int keyCode);
 }

@@ -116,7 +116,7 @@ public class ApplicationInfo implements Closeable {
         if(jarFile != null) {
             return jarFile.length();
         } else {
-            return Long.parseLong(getMainAttribute(KEY_JAR_SIZE));
+            return Long.parseLong(getMainAttribute(KEY_JAR_SIZE).trim());
         }
     }
 

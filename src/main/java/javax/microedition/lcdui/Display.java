@@ -81,28 +81,22 @@ import javax.microedition.midlet.MIDlet;
  */
 public class Display {
 
-    public abstract static class DisplayImpl {
+    public abstract static class Impl {
 
-        public void setCurrent(Displayable nextDisplayable) {
+        public abstract void setCurrent(Displayable nextDisplayable);
 
-        }
+        public abstract void setCurrent(Alert alert, Displayable nextDisplayable);
 
-        public void setCurrent(Alert alert, Displayable nextDisplayable) {
-
-        }
-
-        public void callSerially() {
-
-        }
+        public abstract void callSerially(Runnable runnable);
     }
 
     private Displayable currentDisplayable;
-    private DisplayImpl impl;
+    private Impl impl;
     private DisplayDevice displayDevice;
 
-    public Display() {
-        displayDevice = RetroDevice.getInstance().getDisplay();
-        impl = displayDevice.getDisplayImpl();
+    private Display(Impl impl) {
+        this.displayDevice = RetroDevice.getInstance().getDisplay();
+        this.impl = impl;
     }
 
     /**
@@ -214,7 +208,7 @@ public class Display {
     }
 
     public void callSerially(Runnable runnable) {
-        impl.callSerially();
+        impl.callSerially(runnable);
     }
 
     /**
@@ -229,7 +223,9 @@ public class Display {
             throw new NullPointerException("Cannot get display for null midlet instance");
         }
 
-        return new Display();
+        return new Display(RetroDevice.getInstance()
+                .getDisplay()
+                .getDisplayImpl(m));
     }
 }
 

@@ -1,29 +1,20 @@
 package ru.threedisevenzeror.retrophone;
 
 import javax.microedition.lcdui.Display;
+import javax.microedition.midlet.MIDlet;
 
 /**
  * Created by ThreeDISevenZeroR on 04.11.2016.
  */
-public class DisplayDevice {
+public abstract class DisplayDevice {
 
-    public boolean isColor() {
-        return true;
-    }
+    public abstract boolean isColor();
 
-    public int getColorCount() {
-        return 0xffffff;
-    }
+    public abstract int getColorCount();
 
-    public int getScreenWidth() {
-        return 176;
-    }
+    public abstract int getScreenWidth();
 
-    public int getScreenHeight() {
-        return 208;
-    }
+    public abstract int getScreenHeight();
 
-    public Display.DisplayImpl getDisplayImpl() {
-        throw new IllegalStateException("Not implemented");
-    }
+    public abstract Display.Impl getDisplayImpl(MIDlet midlet);
 }

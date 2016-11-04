@@ -34,7 +34,7 @@ import ru.threedisevenzeror.retrophone.RetroDevice;
  */
 public final class Font {
 
-    public abstract class Impl {
+    public abstract static class Impl {
 
         protected int styleMask;
         protected int size;

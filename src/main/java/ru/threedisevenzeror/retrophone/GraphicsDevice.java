@@ -7,29 +7,17 @@ import javax.microedition.lcdui.Image;
 /**
  * Created by ThreeDISevenZeroR on 04.11.2016.
  */
-public class GraphicsDevice {
+public abstract class GraphicsDevice {
 
-    public Font.Impl getFontImpl(int face, int style, int size) {
-        throw new IllegalStateException("Not implemented");
-    }
+    public abstract Font.Impl getFontImpl(int face, int style, int size);
 
-    public Graphics.Impl getOffScreenGraphicsImpl(Image image) {
-        throw new IllegalStateException("Not implemented");
-    }
+    public abstract Graphics.Impl getOffScreenGraphicsImpl(Image image);
 
-    public Image.Impl createMutableImage(int width, int height) {
-        throw new IllegalStateException("Not implemented");
-    }
+    public abstract Image.Impl createMutableImage(int width, int height);
 
-    public Image.Impl createImmutableImage(byte[] imageData, int imageOffset, int imageLenght) {
-        throw new IllegalStateException("Not implemented");
-    }
+    public abstract Image.Impl createImmutableImage(byte[] imageData, int imageOffset, int imageLenght);
 
-    public Image.Impl createImmutableImage(String name) {
-        throw new IllegalStateException("Not implemented");
-    }
+    public abstract Image.Impl createImmutableImage(String name);
 
-    public Image.Impl createImmutableImage(Image image) {
-        throw new IllegalStateException("Not implemented");
-    }
+    public abstract Image.Impl createImmutableImage(Image image);
 }
