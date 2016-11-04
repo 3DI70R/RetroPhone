@@ -35,6 +35,16 @@ public class NullGraphics extends Graphics.Impl {
     }
 
     @Override
+    public int getWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getHeight() {
+        return 0;
+    }
+
+    @Override
     public void clipRect(int x, int y, int width, int height) {
 
     }

@@ -18,6 +18,10 @@ public class Graphics {
 
         public abstract int getClipY();
 
+        public abstract int getWidth();
+
+        public abstract int getHeight();
+
         public int getColor() {
             return color;
         }
@@ -177,6 +181,12 @@ public class Graphics {
 
     Graphics(Impl impl) {
         this.impl = impl;
+
+        setClip(0, 0, impl.getWidth(), impl.getHeight());
+        setColor(0, 0, 0);
+        setFont(Font.getDefaultFont());
+        setStrokeStyle(Graphics.SOLID);
+        translate(0, 0);
     }
 
     /**

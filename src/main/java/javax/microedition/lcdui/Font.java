@@ -36,9 +36,15 @@ public final class Font {
 
     public abstract static class Impl {
 
-        protected int styleMask;
-        protected int size;
-        protected int face;
+        private int styleMask;
+        private int size;
+        private int face;
+
+        public Impl(int face, int styleMask, int size) {
+            this.styleMask = styleMask;
+            this.size = size;
+            this.face = face;
+        }
 
         public abstract int getHeight();
 

@@ -136,6 +136,11 @@ public class Image {
      * @throws IllegalArgumentException if imageData is incorrectly formatted or otherwise cannot be decoded
      */
     public static Image createImage(byte[] imageData, int imageOffset, int imageLength) {
+
+        if(imageOffset < 0 || imageLength < 0 || imageOffset + imageLength > imageData.length) {
+            throw new IllegalStateException("Invalid offset or length: o:" + imageOffset + ", l:" + imageLength);
+        }
+
         return new Image(RetroDevice.getInstance()
                 .getGraphics()
                 .createImmutableImage(imageData, imageOffset, imageLength));

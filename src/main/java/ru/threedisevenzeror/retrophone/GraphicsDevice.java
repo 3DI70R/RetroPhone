@@ -1,5 +1,7 @@
 package ru.threedisevenzeror.retrophone;
 
+import java.io.IOException;
+
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
@@ -17,7 +19,7 @@ public abstract class GraphicsDevice {
 
     public abstract Image.Impl createImmutableImage(byte[] imageData, int imageOffset, int imageLenght);
 
-    public abstract Image.Impl createImmutableImage(String name);
+    public abstract Image.Impl createImmutableImage(String name) throws IOException;
 
     public abstract Image.Impl createImmutableImage(Image image);
 }

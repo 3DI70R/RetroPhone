@@ -7,10 +7,10 @@ import javax.microedition.lcdui.Font;
  */
 public class NullFont extends Font.Impl {
 
-    public static final NullFont instance = new NullFont();
+    public static final NullFont instance = new NullFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_MEDIUM);
 
-    private NullFont() {
-
+    public NullFont(int face, int styleMask, int size) {
+        super(face, styleMask, size);
     }
 
     @Override
