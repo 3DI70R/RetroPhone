@@ -249,7 +249,7 @@ public class List extends Screen implements Choice {
     public void setSelectedIndex(int elementNum, boolean selected) {
         choice.setSelectedIndex(elementNum, selected);
 
-        if(selected && choiceDelegate.getChoiceType() != IMPLICIT) {
+        if(selected && choiceDelegate.getChoiceType() == IMPLICIT) {
             invokeCommand(SELECT_COMMAND);
         }
     }
