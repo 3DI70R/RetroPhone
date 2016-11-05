@@ -4,6 +4,7 @@ import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A ChoiceGroup is a group of selectable elements intended to be placed within a Form.
@@ -27,9 +28,14 @@ public class ChoiceGroup extends Item implements Choice {
             checkForAttach();
             return getAttachedObject().choiceType;
         }
+
+        public java.util.List<ChoiceEntry> getEntries() {
+            checkForAttach();
+            return Collections.unmodifiableList(getAttachedObject().itemList);
+        }
     }
 
-    private static class ChoiceEntry {
+    public static class ChoiceEntry {
 
         public Image image;
         public String string;

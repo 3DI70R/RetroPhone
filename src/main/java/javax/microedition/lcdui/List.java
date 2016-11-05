@@ -70,6 +70,16 @@ public class List extends Screen implements Choice {
         public abstract void onItemChanged(int index, String oldStringPart, Image oldImagePart, String newStringPart, Image newImagePart);
         public abstract void onItemRemoved(int index, String stringPart, Image imagePart);
         public abstract void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected);
+
+        public int getChoiceType() {
+            checkForAttach();
+            return getAttachedObject().choiceDelegate.getChoiceType();
+        }
+
+        public java.util.List<ChoiceGroup.ChoiceEntry> getEntries() {
+            checkForAttach();
+            return getAttachedObject().choiceDelegate.getEntries();
+        }
     }
 
     /**
