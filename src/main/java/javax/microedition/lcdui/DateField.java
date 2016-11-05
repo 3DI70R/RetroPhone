@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 import java.util.Date;
@@ -23,24 +24,13 @@ import java.util.TimeZone;
  */
 public class DateField extends Item {
 
-    public static abstract class DateFieldDelegate extends ItemDelegate {
-
-        public void onDateChanged(Date oldDate, Date newDate) {
-            // noop
-        }
-
-        public void onInputModeChanged(int oldInputMode, int newInputMode) {
-            // noop
-        }
+    public static abstract class DateFieldDelegate  extends ComponentDelegate<DateField> {
+        public abstract void onDateChanged(Date oldDate, Date newDate);
+        public abstract void onInputModeChanged(int oldInputMode, int newInputMode);
 
         public TimeZone getTimeZone() {
             checkForAttach();
             return getAttachedObject().timeZone;
-        }
-
-        @Override
-        public DateField getAttachedObject() {
-            return (DateField) super.getAttachedObject();
         }
     }
 
@@ -67,7 +57,7 @@ public class DateField extends Item {
     private int inputMode;
     private TimeZone timeZone;
     private Date currentDate;
-    private final DelegateHolder<DateFieldDelegate> delegateHolder;
+    private final DelegateHolder<DateFieldDelegate, DateField> delegateHolder;
 
     /**
      * Creates a DateField object with the specified label and mode.
@@ -98,7 +88,7 @@ public class DateField extends Item {
             throw new IllegalArgumentException("input inputMode value is invalid");
         }
 
-        delegateHolder = new DelegateHolder<DateFieldDelegate>(this);
+        delegateHolder = new DelegateHolder<DateFieldDelegate, DateField>(this);
         inputMode = mode;
         currentDate = null;
 
@@ -173,14 +163,7 @@ public class DateField extends Item {
     }
 
     public void attachDelegate(DateFieldDelegate newDelegate) {
-        super.attachDelegate(newDelegate);
         delegateHolder.setDelegate(newDelegate);
-    }
-
-    @Override
-    public void attachDelegate(ItemDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 }
 

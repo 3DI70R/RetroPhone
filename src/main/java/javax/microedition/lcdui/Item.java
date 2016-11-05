@@ -5,11 +5,9 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 public abstract class Item {
 
-    public static abstract class ItemDelegate extends ComponentDelegate {
+    public static abstract class ItemDelegate extends ComponentDelegate<Item> {
 
-        public void onLabelChanged(String oldLabel, String newLabel) {
-            // noop
-        }
+        public abstract void onLabelChanged(String oldLabel, String newLabel);
 
         public void onOwnerChanged(Displayable oldOwner, Displayable newOwner) {
             // noop
@@ -27,20 +25,15 @@ public abstract class Item {
                 item.stateListener.itemStateChanged(item);
             }
         }
-
-        @Override
-        public Item getAttachedObject() {
-            return (Item) super.getAttachedObject();
-        }
     }
 
     private Displayable owner;
     private String itemLabel;
     private ItemStateListener stateListener;
-    private final DelegateHolder<ItemDelegate> delegateHolder;
+    private final DelegateHolder<ItemDelegate, Item> delegateHolder;
 
     public Item() {
-        delegateHolder = new DelegateHolder<ItemDelegate>(this);
+        delegateHolder = new DelegateHolder<ItemDelegate, Item>(this);
     }
 
     /**

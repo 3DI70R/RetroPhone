@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 import java.util.ArrayList;
@@ -52,38 +53,25 @@ import java.util.ArrayList;
  */
 public class Form extends Screen {
 
-    public static class FormDelegate extends ScreenDelegate {
-
-        public void onItemAdded(int position, Item newItem) {
-            // noop
-        }
-
-        public void onItemRemoved(int position, Item removedItem) {
-            // noop
-        }
-
-        public void onItemChanged(int position, Item oldItem, Item newItem) {
-            // noop
-        }
-
-        public void onItemStateChanged(int position, Item item) {
-            // noop
-        }
+    public static abstract class FormDelegate extends ComponentDelegate<Form> {
+        public abstract void onItemAdded(int position, Item newItem);
+        public abstract void onItemRemoved(int position, Item removedItem);
+        public abstract void onItemChanged(int position, Item oldItem, Item newItem);
+        public abstract void onItemStateChanged(int position, Item item);
     }
 
     private java.util.List<Item> itemList;
     private ItemStateListener itemStateListener;
     private ItemStateListener innerStateListener;
-    private final DelegateHolder<FormDelegate> delegateHolder;
+    private final DelegateHolder<FormDelegate, Form> delegateHolder;
 
     /**
      * Creates a new, empty Form.
      * @param title the Form's title, or null for no title
      */
     public Form(String title) {
-        delegateHolder = new DelegateHolder<FormDelegate>(this);
+        delegateHolder = new DelegateHolder<FormDelegate, Form>(this);
         innerStateListener = new ItemStateListener() {
-            @Override
             public void itemStateChanged(Item item) {
                 if(itemStateListener != null) {
                     itemStateListener.itemStateChanged(item);
@@ -274,20 +262,7 @@ public class Form extends Screen {
     }
 
     public void attachDelegate(FormDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(DisplayableDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(ScreenDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 
     private void validateItem(Item item) {

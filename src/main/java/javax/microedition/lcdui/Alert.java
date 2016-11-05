@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 /**
@@ -30,28 +31,11 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public class Alert extends Screen {
 
-    public abstract static class AlertDelegate extends ScreenDelegate {
-
-        public void onAlertStringChanged(String oldAlertText, String newAlertText) {
-            // noop
-        }
-
-        public void onAlertImageChanged(Image oldImage, Image newImage) {
-            // noop
-        }
-
-        public void onAlertTypeChanged(AlertType oldType, AlertType newType) {
-            // noop
-        }
-
-        public void onAlertTimeoutChanged(int oldTimeout, int newTimeout) {
-            // noop
-        }
-
-        @Override
-        public Alert getAttachedObject() {
-            return (Alert) super.getAttachedObject();
-        }
+    public abstract static class AlertDelegate extends ComponentDelegate<Alert> {
+        public abstract void onAlertStringChanged(String oldAlertText, String newAlertText);
+        public abstract void onAlertImageChanged(Image oldImage, Image newImage);
+        public abstract void onAlertTypeChanged(AlertType oldType, AlertType newType);
+        public abstract void onAlertTimeoutChanged(int oldTimeout, int newTimeout);
     }
 
     /**
@@ -66,7 +50,7 @@ public class Alert extends Screen {
     private Image alertImage;
     private AlertType alertType;
     private int timeout;
-    private final DelegateHolder<AlertDelegate> delegateHolder;
+    private final DelegateHolder<AlertDelegate, Alert> delegateHolder;
 
     /**
      * Constructs a new, empty Alert object with the given title.
@@ -93,7 +77,7 @@ public class Alert extends Screen {
      * @param alertType the type of the Alert, or null if the Alert has no specific type
      */
     public Alert(String title, String alertText, Image alertImage, AlertType alertType) {
-        delegateHolder = new DelegateHolder<AlertDelegate>(this);
+        delegateHolder = new DelegateHolder<AlertDelegate, Alert>(this);
         setTitle(title);
         setString(alertText);
         setImage(alertImage);
@@ -229,20 +213,7 @@ public class Alert extends Screen {
     }
 
     public void attachDelegate(AlertDelegate newDelegate) {
-        super.attachDelegate(newDelegate);
         delegateHolder.setDelegate(newDelegate);
-    }
-
-    @Override
-    public void attachDelegate(DisplayableDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(ScreenDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 }
 

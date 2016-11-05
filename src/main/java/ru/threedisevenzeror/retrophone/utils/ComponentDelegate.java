@@ -3,10 +3,10 @@ package ru.threedisevenzeror.retrophone.utils;
 /**
  * Created by ThreeDISevenZeroR on 04.11.2016.
  */
-public abstract class ComponentDelegate {
+public abstract class ComponentDelegate<T> {
 
-    DelegateHolder<?> holder;
-    Object attachedObject;
+    DelegateHolder<?, T> holder;
+    T attachedObject;
 
     public boolean isAttached() {
         return attachedObject != null;
@@ -20,7 +20,7 @@ public abstract class ComponentDelegate {
         // noop
     }
 
-    public Object getAttachedObject() {
+    public T getAttachedObject() {
         return attachedObject;
     }
 

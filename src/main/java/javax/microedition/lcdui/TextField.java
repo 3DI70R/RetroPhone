@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 /**
@@ -40,19 +41,10 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public class TextField extends Item {
 
-    public abstract static class TextFieldDelegate extends ItemDelegate {
-
-        public void onMaxSizeChanged(int prevMaxSize, int newMaxSize) {
-            // noop
-        }
-
-        public void onConstraintsChanged(int prevConstraints, int newConstraints) {
-            // noop
-        }
-
-        public void onStringChanged(String prevString, String newString) {
-            // noop
-        }
+    public abstract static class TextFieldDelegate extends ComponentDelegate<TextField> {
+        public abstract void onMaxSizeChanged(int prevMaxSize, int newMaxSize);
+        public abstract void onConstraintsChanged(int prevConstraints, int newConstraints);
+        public abstract void onStringChanged(String prevString, String newString);
 
         public void setCaretPosition(int caretPosition) {
             checkForAttach();
@@ -63,11 +55,6 @@ public class TextField extends Item {
             checkForAttach();
             TextField field = getAttachedObject();
             return field.isValidForConstraints(text, field.getConstraints());
-        }
-
-        @Override
-        public TextField getAttachedObject() {
-            return (TextField) super.getAttachedObject();
         }
     }
 
@@ -129,7 +116,7 @@ public class TextField extends Item {
     private int currentMaxSize;
     private int currentConstraints;
     private int caretPosition;
-    private final DelegateHolder<TextFieldDelegate> delegateHolder;
+    private final DelegateHolder<TextFieldDelegate, TextField> delegateHolder;
 
     /**
      * Creates a new TextField object with the given label, initial contents, maximum size in characters,
@@ -148,7 +135,7 @@ public class TextField extends Item {
      * capacity or the maximum capacity actually assigned
      */
     public TextField(String label, String text, int maxSize, int constraints) {
-        delegateHolder = new DelegateHolder<TextFieldDelegate>(this);
+        delegateHolder = new DelegateHolder<TextFieldDelegate, TextField>(this);
         setLabel(label);
         setMaxSize(maxSize);
         setConstraints(constraints);
@@ -382,14 +369,7 @@ public class TextField extends Item {
     ////////// Implementation methods \\\\\\\\\\
 
     public void attachDelegate(TextFieldDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(ItemDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 
     void setCaretPosition(int caretPosition) {

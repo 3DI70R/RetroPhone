@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 /**
@@ -23,28 +24,17 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public abstract class Screen extends Displayable {
 
-    public static abstract class ScreenDelegate extends DisplayableDelegate {
-
-        public void onTitleChanged(String oldTitle, String newTitle) {
-            // noop
-        }
-
-        public void onTickerChanged(Ticker oldTicker, Ticker newTicker) {
-            // noop
-        }
-
-        @Override
-        public Screen getAttachedObject() {
-            return (Screen) super.getAttachedObject();
-        }
+    public static abstract class ScreenDelegate extends ComponentDelegate<Screen> {
+        public abstract void onTitleChanged(String oldTitle, String newTitle);
+        public abstract void onTickerChanged(Ticker oldTicker, Ticker newTicker);
     }
 
     private String title;
     private Ticker ticker;
-    private final DelegateHolder<ScreenDelegate> delegateHolder;
+    private final DelegateHolder<ScreenDelegate, Screen> delegateHolder;
 
     public Screen() {
-        delegateHolder = new DelegateHolder<ScreenDelegate>(this);
+        delegateHolder = new DelegateHolder<ScreenDelegate, Screen>(this);
     }
 
     /**
@@ -97,14 +87,7 @@ public abstract class Screen extends Displayable {
         }
     }
 
-    @Override
-    public void attachDelegate(DisplayableDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
-    }
-
     public void attachDelegate(ScreenDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
     }
 }

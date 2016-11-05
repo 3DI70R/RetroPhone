@@ -26,20 +26,12 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public class Ticker {
 
-    public static abstract class TickerDelegate extends ComponentDelegate {
-
-        public void onStringChanged(String oldString, String newString) {
-            // noop
-        }
-
-        @Override
-        public Ticker getAttachedObject() {
-            return (Ticker) super.getAttachedObject();
-        }
+    public static abstract class TickerDelegate extends ComponentDelegate<Ticker> {
+        public abstract void onStringChanged(String oldString, String newString);
     }
 
     private String string;
-    private final DelegateHolder<TickerDelegate> delegateHolder;
+    private final DelegateHolder<TickerDelegate, Ticker> delegateHolder;
 
     /**
      * Constructs a new Ticker object, given its initial contents string.
@@ -48,7 +40,7 @@ public class Ticker {
      * @throws NullPointerException if str is null
      */
     public Ticker(String str) {
-        delegateHolder = new DelegateHolder<TickerDelegate>(this);
+        delegateHolder = new DelegateHolder<TickerDelegate, Ticker>(this);
         setString(str);
     }
 

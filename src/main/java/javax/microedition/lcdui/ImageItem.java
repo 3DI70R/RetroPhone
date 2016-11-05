@@ -1,27 +1,14 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 public class ImageItem extends Item {
 
-    public static abstract class ImageItemDelegate extends ItemDelegate {
-
-        public void onLayoutChanged(int prevLayout, int newLayout) {
-            // noop
-        }
-
-        public void onImageChanged(Image prevImage, Image newImage) {
-            // noop
-        }
-
-        public void onAltTextChanged(String oldAltText, String newAltText) {
-            // noop
-        }
-
-        @Override
-        public ImageItem getAttachedObject() {
-            return (ImageItem) super.getAttachedObject();
-        }
+    public static abstract class ImageItemDelegate extends ComponentDelegate<ImageItem> {
+        public abstract void onLayoutChanged(int prevLayout, int newLayout);
+        public abstract void onImageChanged(Image prevImage, Image newImage);
+        public abstract void onAltTextChanged(String oldAltText, String newAltText);
     }
 
     /**
@@ -57,7 +44,7 @@ public class ImageItem extends Item {
     private Image image;
     private int itemLayout;
     private String altText;
-    private final DelegateHolder<ImageItemDelegate> delegateHolder;
+    private final DelegateHolder<ImageItemDelegate, ImageItem> delegateHolder;
 
     /**
      * Creates a new ImageItem with the given label, image, layout directive, and alternate text string.
@@ -71,7 +58,7 @@ public class ImageItem extends Item {
      * @throws IllegalArgumentException if the layout value is not a legal combination of directives
      */
     public ImageItem(String label, Image img, int layout, String altText) {
-        delegateHolder = new DelegateHolder<ImageItemDelegate>(this);
+        delegateHolder = new DelegateHolder<ImageItemDelegate, ImageItem>(this);
         setLabel(label);
         setImage(img);
         setLayout(layout);
@@ -158,14 +145,7 @@ public class ImageItem extends Item {
     ////////// Implementation methods \\\\\\\\\\
 
     public void attachDelegate(ImageItemDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(ItemDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 }
 

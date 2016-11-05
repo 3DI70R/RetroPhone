@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 import java.util.ArrayList;
@@ -15,33 +16,16 @@ import java.util.ArrayList;
  */
 public class ChoiceGroup extends Item implements Choice {
 
-    public static abstract class ChoiceGroupDelegate extends ItemDelegate implements ChoiceDelegate {
+    public static abstract class ChoiceGroupDelegate  extends ComponentDelegate<ChoiceGroup> implements ChoiceDelegate {
 
-        public void onItemAdded(int index, String stringPart, Image imagePart) {
-            // noop
-        }
-
-        public void onItemChanged(int index, String oldStringPart, Image oldImagePart,
-                                  String newStringPart, Image newImagePart) {
-            // noop
-        }
-
-        public void onItemRemoved(int index, String stringPart, Image imagePart) {
-            // noop
-        }
-
-        public void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected) {
-            // noop
-        }
+        public abstract void onItemAdded(int index, String stringPart, Image imagePart);
+        public abstract void onItemChanged(int index, String oldStringPart, Image oldImagePart, String newStringPart, Image newImagePart);
+        public abstract void onItemRemoved(int index, String stringPart, Image imagePart);
+        public abstract void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected);
 
         public int getChoiceType() {
             checkForAttach();
             return getAttachedObject().choiceType;
-        }
-
-        @Override
-        public ChoiceGroup getAttachedObject() {
-            return (ChoiceGroup) super.getAttachedObject();
         }
     }
 
@@ -64,7 +48,7 @@ public class ChoiceGroup extends Item implements Choice {
 
     private int choiceType;
     private java.util.List<ChoiceEntry> itemList;
-    private final DelegateHolder<ChoiceGroupDelegate> delegateHolder;
+    private final DelegateHolder<ChoiceGroupDelegate, ChoiceGroup> delegateHolder;
 
     /**
      * Creates a new, empty ChoiceGroup, specifying its title and its type.
@@ -121,7 +105,7 @@ public class ChoiceGroup extends Item implements Choice {
             throw new IllegalArgumentException("the imageElements has a different length from the stringElements array");
         }
 
-        this.delegateHolder = new DelegateHolder<ChoiceGroupDelegate>(this);
+        this.delegateHolder = new DelegateHolder<ChoiceGroupDelegate, ChoiceGroup>(this);
         this.choiceType = choiceType;
         this.itemList = new ArrayList<ChoiceEntry>();
 
@@ -286,14 +270,7 @@ public class ChoiceGroup extends Item implements Choice {
 
     ////////// Implementation methods \\\\\\\\\\
 
-    @Override
-    public void attachDelegate(ItemDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
-    }
-
     public void attachDelegate(ChoiceGroupDelegate newDelegate) {
-        super.attachDelegate(newDelegate);
         delegateHolder.setDelegate(newDelegate);
     }
 

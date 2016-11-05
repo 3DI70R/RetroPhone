@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 /**
@@ -10,20 +11,12 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public class StringItem extends Item {
 
-    public static abstract class StringItemDelegate extends ItemDelegate {
-
-        public void onTextChanged(String oldText, String newText) {
-            // noop
-        }
-
-        @Override
-        public StringItem getAttachedObject() {
-            return (StringItem) super.getAttachedObject();
-        }
+    public static abstract class StringItemDelegate extends ComponentDelegate<StringItem> {
+        public abstract void onTextChanged(String oldText, String newText);
     }
 
     private String currentText;
-    private final DelegateHolder<StringItemDelegate> delegateHolder;
+    private final DelegateHolder<StringItemDelegate, StringItem> delegateHolder;
 
     /**
      * Creates a new StringItem object with empty label and textual content
@@ -38,7 +31,7 @@ public class StringItem extends Item {
      * @param text the text contents
      */
     public StringItem(String label, String text)  {
-        delegateHolder = new DelegateHolder<StringItemDelegate>(this);
+        delegateHolder = new DelegateHolder<StringItemDelegate, StringItem>(this);
         setLabel(label);
         setText(text);
     }
@@ -71,14 +64,7 @@ public class StringItem extends Item {
 
     ////////// Implementation methods \\\\\\\\\\
 
-    @Override
-    public void attachDelegate(ItemDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
-    }
-
     public void attachDelegate(StringItemDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
     }
 }

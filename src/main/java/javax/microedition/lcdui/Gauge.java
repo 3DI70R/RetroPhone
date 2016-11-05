@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 /**
@@ -36,26 +37,15 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public class Gauge extends Item {
 
-    public static abstract class GaugeDelegate extends ItemDelegate {
-
-        public void onValueChanged(int oldValue, int newValue) {
-            // noop
-        }
-
-        public void onMaxValueChanged(int oldMaxValue, int newMaxValue) {
-            // noop
-        }
-
-        @Override
-        public Gauge getAttachedObject() {
-            return (Gauge) super.getAttachedObject();
-        }
+    public static abstract class GaugeDelegate extends ComponentDelegate<Gauge> {
+        public abstract void onValueChanged(int oldValue, int newValue);
+        public abstract void onMaxValueChanged(int oldMaxValue, int newMaxValue);
     }
 
     private boolean isInteractive;
     private int maxValue;
     private int value;
-    private final DelegateHolder<GaugeDelegate> delegateHolder;
+    private final DelegateHolder<GaugeDelegate, Gauge> delegateHolder;
 
     /**
      * Creates a new Gauge object with the given label, in interactive or non-interactive mode, with the given maximum and initial values.
@@ -72,7 +62,7 @@ public class Gauge extends Item {
      */
     public Gauge(String label, boolean interactive, int maxValue, int initialValue)  {
 
-        this.delegateHolder = new DelegateHolder<GaugeDelegate>(this);
+        this.delegateHolder = new DelegateHolder<GaugeDelegate, Gauge>(this);
         this.isInteractive = interactive;
 
         setLabel(label);
@@ -152,14 +142,7 @@ public class Gauge extends Item {
     }
 
     public void attachDelegate(GaugeDelegate newDelegate) {
-        super.attachDelegate(newDelegate);
         delegateHolder.setDelegate(newDelegate);
-    }
-
-    @Override
-    public void attachDelegate(ItemDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 }
 

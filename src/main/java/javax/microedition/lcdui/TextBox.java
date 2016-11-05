@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 /**
@@ -27,19 +28,10 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public class TextBox extends Screen {
 
-    public static abstract class TextBoxDelegate extends ScreenDelegate {
-
-        public void onMaxSizeChanged(int prevMaxSize, int newMaxSize) {
-            // noop
-        }
-
-        public void onConstraintsChanged(int prevConstraints, int newConstraints) {
-            // noop
-        }
-
-        public void onStringChanged(String prevString, String newString) {
-            // noop
-        }
+    public static abstract class TextBoxDelegate extends ComponentDelegate<TextBox> {
+        public abstract void onMaxSizeChanged(int prevMaxSize, int newMaxSize);
+        public abstract void onConstraintsChanged(int prevConstraints, int newConstraints);
+        public abstract void onStringChanged(String prevString, String newString);
 
         public void setCaretPosition(int caretPosition) {
             checkForAttach();
@@ -51,15 +43,10 @@ public class TextBox extends Screen {
             TextBox box = getAttachedObject();
             return box.textField.isValidForConstraints(text, box.getConstraints());
         }
-
-        @Override
-        public TextBox getAttachedObject() {
-            return (TextBox) super.getAttachedObject();
-        }
     }
 
     private TextField textField;
-    private final DelegateHolder<TextBoxDelegate> delegateHolder;
+    private final DelegateHolder<TextBoxDelegate, TextBox> delegateHolder;
 
     /**
      * Creates a new TextBox object with the given title string, initial contents, maximum size in characters,
@@ -78,13 +65,11 @@ public class TextBox extends Screen {
      * @throws IllegalArgumentException if the length of the string exceeds the requested maximum capacity or the maximum capacity actually assigned
      */
     public TextBox(String title, String text, int maxSize, int constraints) {
-        delegateHolder = new DelegateHolder<TextBoxDelegate>(this);
+        delegateHolder = new DelegateHolder<TextBoxDelegate, TextBox>(this);
         textField = new TextField(title, text, maxSize, constraints);
         textField.attachDelegate(new TextField.TextFieldDelegate() {
             @Override
             public void onMaxSizeChanged(int prevMaxSize, int newMaxSize) {
-                super.onMaxSizeChanged(prevMaxSize, newMaxSize);
-
                 TextBoxDelegate delegate = delegateHolder.getDelegate();
                 if(delegate != null) {
                     delegate.onMaxSizeChanged(prevMaxSize, newMaxSize);
@@ -93,8 +78,6 @@ public class TextBox extends Screen {
 
             @Override
             public void onConstraintsChanged(int prevConstraints, int newConstraints) {
-                super.onConstraintsChanged(prevConstraints, newConstraints);
-
                 TextBoxDelegate delegate = delegateHolder.getDelegate();
                 if(delegate != null) {
                     delegate.onConstraintsChanged(prevConstraints, newConstraints);
@@ -103,8 +86,6 @@ public class TextBox extends Screen {
 
             @Override
             public void onStringChanged(String prevString, String newString) {
-                super.onStringChanged(prevString, newString);
-
                 TextBoxDelegate delegate = delegateHolder.getDelegate();
                 if(delegate != null) {
                     delegate.onStringChanged(prevString, newString);
@@ -277,20 +258,7 @@ public class TextBox extends Screen {
     }
 
     public void attachDelegate(TextBoxDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(DisplayableDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(ScreenDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 }
 

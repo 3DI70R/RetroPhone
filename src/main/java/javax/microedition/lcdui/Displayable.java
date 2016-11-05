@@ -15,31 +15,25 @@ public abstract class Displayable {
      * Displayable's delegate
      * Provides basic functions and callbacks from displayable for specific implementation
      */
-    public static abstract class DisplayableDelegate extends ComponentDelegate {
+    public static abstract class DisplayableDelegate extends ComponentDelegate<Displayable> {
 
         /**
          * Callback that called just after new command is added to attached displayable
          * @param command added command
          */
-        public void onCommandAdded(Command command) {
-            // noop
-        }
+        public abstract void onCommandAdded(Command command);
 
         /**
          * Callback that called just after command is removed from displayable
          * @param command removed command
          */
-        public void onCommandRemoved(Command command) {
-            // noop
-        }
+        public abstract void onCommandRemoved(Command command);
 
         /**
          * Method that called just after command is invoked
          * @param command invoked command
          */
-        public void onCommandAction(Command command) {
-            // noop
-        }
+        public abstract void onCommandAction(Command command);
 
         /**
          * Get all commands that contains within attached Displayable
@@ -59,20 +53,15 @@ public abstract class Displayable {
             checkForAttach();
             getAttachedObject().invokeCommand(command);
         }
-
-        @Override
-        public Displayable getAttachedObject() {
-            return (Displayable) super.getAttachedObject();
-        }
     }
 
     private CommandListener commandListener;
-    private final DelegateHolder<DisplayableDelegate> delegateHolder;
+    private final DelegateHolder<DisplayableDelegate, Displayable> delegateHolder;
     private java.util.List<Command> commandList;
 
     public Displayable() {
         commandList = new ArrayList<Command>();
-        delegateHolder = new DelegateHolder<DisplayableDelegate>(this);
+        delegateHolder = new DelegateHolder<DisplayableDelegate, Displayable>(this);
     }
 
     /**

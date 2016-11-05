@@ -1,5 +1,6 @@
 package javax.microedition.lcdui;
 
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 /**
@@ -64,29 +65,11 @@ import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
  */
 public class List extends Screen implements Choice {
 
-    public static abstract class ListDelegate extends ScreenDelegate implements ChoiceDelegate {
-
-        public void onItemAdded(int index, String stringPart, Image imagePart) {
-            // noop
-        }
-
-        public void onItemChanged(int index, String oldStringPart, Image oldImagePart,
-                                  String newStringPart, Image newImagePart) {
-            // noop
-        }
-
-        public void onItemRemoved(int index, String stringPart, Image imagePart) {
-            // noop
-        }
-
-        public void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected) {
-            // noop
-        }
-
-        @Override
-        public List getAttachedObject() {
-            return (List) super.getAttachedObject();
-        }
+    public static abstract class ListDelegate extends ComponentDelegate<List> implements ChoiceDelegate {
+        public abstract void onItemAdded(int index, String stringPart, Image imagePart);
+        public abstract void onItemChanged(int index, String oldStringPart, Image oldImagePart, String newStringPart, Image newImagePart);
+        public abstract void onItemRemoved(int index, String stringPart, Image imagePart);
+        public abstract void onItemSelectionChange(int index, String stringPart, Image imagePart, boolean isSelected);
     }
 
     /**
@@ -100,7 +83,7 @@ public class List extends Screen implements Choice {
 
     private ChoiceGroup choice;
     private ChoiceGroup.ChoiceGroupDelegate choiceDelegate;
-    private final DelegateHolder<ListDelegate> delegateHolder;
+    private final DelegateHolder<ListDelegate, List> delegateHolder;
 
     /**
      * Creates a new, empty List, specifying its title and the type of the list.
@@ -137,7 +120,7 @@ public class List extends Screen implements Choice {
      * @throws IllegalArgumentException if any image in the imageElements array is mutable
      */
     public List(String title, int listType, String[] stringElements, Image[] imageElements) {
-        delegateHolder = new DelegateHolder<ListDelegate>(this);
+        delegateHolder = new DelegateHolder<ListDelegate, List>(this);
         choice = new ChoiceGroup(title, listType, stringElements, imageElements, true);
         choice.setOwner(this);
         choiceDelegate = new ChoiceGroup.ChoiceGroupDelegate() {
@@ -271,20 +254,7 @@ public class List extends Screen implements Choice {
     ////////// Implementation methods \\\\\\\\\\
 
     public void attachDelegate(ListDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(DisplayableDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(ScreenDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 }
 

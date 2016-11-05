@@ -3,12 +3,12 @@ package ru.threedisevenzeror.retrophone.utils;
 /**
  * Created by ThreeDISevenZeroR on 04.11.2016.
  */
-public class DelegateHolder<D extends ComponentDelegate> {
+public class DelegateHolder<D extends ComponentDelegate<T>, T> {
 
     private D delegate;
-    private Object attachObject;
+    private T attachObject;
 
-    public DelegateHolder(Object attachObject) {
+    public DelegateHolder(T attachObject) {
         this.attachObject = attachObject;
     }
 

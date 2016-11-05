@@ -4,11 +4,12 @@ import ru.threedisevenzeror.retrophone.DisplayDevice;
 import ru.threedisevenzeror.retrophone.GraphicsDevice;
 import ru.threedisevenzeror.retrophone.InputDevice;
 import ru.threedisevenzeror.retrophone.RetroDevice;
+import ru.threedisevenzeror.retrophone.utils.ComponentDelegate;
 import ru.threedisevenzeror.retrophone.utils.DelegateHolder;
 
 public abstract class Canvas extends Displayable {
 
-    public static abstract class CanvasDelegate extends DisplayableDelegate {
+    public static abstract class CanvasDelegate extends ComponentDelegate<Canvas> {
 
         public void paint(Graphics graphics) {
             checkForAttach();
@@ -56,18 +57,8 @@ public abstract class Canvas extends Displayable {
             getAttachedObject().pointerReleased(x, y);
         }
 
-        public void repaint(int x, int y, int width, int height) {
-            // noop
-        }
-
-        public void serviceRepaints() {
-            // noop
-        }
-
-        @Override
-        public Canvas getAttachedObject() {
-            return (Canvas) super.getAttachedObject();
-        }
+        public abstract void repaint(int x, int y, int width, int height);
+        public abstract void serviceRepaints();
     }
 
     /**
@@ -178,14 +169,14 @@ public abstract class Canvas extends Displayable {
     private GraphicsDevice graphicsDevice;
     private DisplayDevice displayDevice;
     private InputDevice inputDevice;
-    private final DelegateHolder<CanvasDelegate> delegateHolder;
+    private final DelegateHolder<CanvasDelegate, Canvas> delegateHolder;
 
     private int width;
     private int height;
 
     protected Canvas() {
 
-        delegateHolder = new DelegateHolder<CanvasDelegate>(this);
+        delegateHolder = new DelegateHolder<CanvasDelegate, Canvas>(this);
         graphicsDevice = RetroDevice.getInstance().getGraphics();
         displayDevice = RetroDevice.getInstance().getDisplay();
         inputDevice = RetroDevice.getInstance().getInput();
@@ -504,14 +495,7 @@ public abstract class Canvas extends Displayable {
     protected abstract void paint(Graphics g);
 
     public void attachDelegate(CanvasDelegate delegate) {
-        super.attachDelegate(delegate);
         delegateHolder.setDelegate(delegate);
-    }
-
-    @Override
-    public void attachDelegate(DisplayableDelegate delegate) {
-        delegateHolder.setDelegate(null);
-        super.attachDelegate(delegate);
     }
 }
 
