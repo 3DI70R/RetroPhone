@@ -46,6 +46,11 @@ public class TextField extends Item {
         public abstract void onConstraintsChanged(int prevConstraints, int newConstraints);
         public abstract void onStringChanged(String prevString, String newString);
 
+        public void setText(String text) {
+            checkForAttach();
+            getAttachedObject().string = text;
+        }
+
         public void setCaretPosition(int caretPosition) {
             checkForAttach();
             getAttachedObject().setCaretPosition(caretPosition);

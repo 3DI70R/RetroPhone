@@ -33,6 +33,13 @@ public class TextBox extends Screen {
         public abstract void onConstraintsChanged(int prevConstraints, int newConstraints);
         public abstract void onStringChanged(String prevString, String newString);
 
+        public void setText(String newText) {
+            checkForAttach();
+            getAttachedObject().delegateHolder
+                    .getDelegate()
+                    .setText(newText);
+        }
+
         public void setCaretPosition(int caretPosition) {
             checkForAttach();
             getAttachedObject().textField.setCaretPosition(caretPosition);
