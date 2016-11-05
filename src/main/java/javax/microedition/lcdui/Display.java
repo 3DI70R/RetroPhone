@@ -178,8 +178,13 @@ public class Display {
      * @param nextDisplayable  the Displayable requested to be made current; null is allowed
      */
     public void setCurrent(final Displayable nextDisplayable) {
-        impl.setCurrent(nextDisplayable);
-        currentDisplayable = nextDisplayable;
+
+        if(nextDisplayable instanceof Alert) {
+            setCurrent((Alert) nextDisplayable, currentDisplayable);
+        } else {
+            impl.setCurrent(nextDisplayable);
+            currentDisplayable = nextDisplayable;
+        }
     }
 
     /**
