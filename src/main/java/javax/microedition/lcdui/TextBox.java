@@ -35,9 +35,7 @@ public class TextBox extends Screen {
 
         public void setText(String newText) {
             checkForAttach();
-            getAttachedObject().delegateHolder
-                    .getDelegate()
-                    .setText(newText);
+            getAttachedObject().textFieldDelegate.setText(newText);
         }
 
         public void setCaretPosition(int caretPosition) {
@@ -53,6 +51,7 @@ public class TextBox extends Screen {
     }
 
     private TextField textField;
+    private TextField.TextFieldDelegate textFieldDelegate;
     private final DelegateHolder<TextBoxDelegate, TextBox> delegateHolder;
 
     /**
@@ -73,8 +72,8 @@ public class TextBox extends Screen {
      */
     public TextBox(String title, String text, int maxSize, int constraints) {
         delegateHolder = new DelegateHolder<TextBoxDelegate, TextBox>(this);
-        textField = new TextField(title, text, maxSize, constraints);
-        textField.attachDelegate(new TextField.TextFieldDelegate() {
+
+        textFieldDelegate = new TextField.TextFieldDelegate() {
             @Override
             public void onMaxSizeChanged(int prevMaxSize, int newMaxSize) {
                 TextBoxDelegate delegate = delegateHolder.getDelegate();
@@ -98,7 +97,10 @@ public class TextBox extends Screen {
                     delegate.onStringChanged(prevString, newString);
                 }
             }
-        });
+        };
+
+        textField = new TextField(title, text, maxSize, constraints);
+        textField.attachDelegate(textFieldDelegate);
 
         textField.setString(text);
 
