@@ -93,6 +93,9 @@ public class TextBox extends Screen {
             }
         });
 
+        textField.setString(text);
+
+        setTitle(title);
         setMaxSize(maxSize);
         setConstraints(constraints);
     }
