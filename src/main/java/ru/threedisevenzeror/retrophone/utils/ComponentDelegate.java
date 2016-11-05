@@ -24,6 +24,12 @@ public abstract class ComponentDelegate<T> {
         return attachedObject;
     }
 
+    public void detach() {
+        if(holder != null) {
+            holder.clearDelegate();
+        }
+    }
+
     /**
      * Checks for attached object and throws exception if it doesn't attached
      */
